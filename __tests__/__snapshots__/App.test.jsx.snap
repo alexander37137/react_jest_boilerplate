@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ReactTab /> renders three <Foo /> components 1`] = `
+exports[`<App /> renders app 1`] = `
 <div
   class="react-tabs"
   data-tabs="true"
