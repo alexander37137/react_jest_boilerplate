@@ -15,6 +15,8 @@ class App extends Component {
     super(props);
 
     this.state = {
+      currentTitle: '',
+      currentValue: '',
       tabs: [
         {
           title: 'Artists',
@@ -28,24 +30,64 @@ class App extends Component {
     };
   }
 
-  render() {
+  deleteTab(index) {
     const { tabs } = this.state;
-    return (
-      <Tabs>
-        <TabList>
-          {tabs.map(({ title }) => (
-            <Tab key={title}>
-              <span data-testid="tab-title">{title}</span>
-            </Tab>
-          ))}
-        </TabList>
+    this.setState({
+      tabs: tabs.filter((_, i) => index !== i),
+    });
+  }
 
-        {tabs.map(({ content }) => (
-          <TabPanel key={content}>
-            <h2 data-testid="tab-content">{content}</h2>
-          </TabPanel>
-        ))}
-      </Tabs>
+  addTab() {
+    const { tabs, currentTitle, currentValue } = this.state;
+    this.setState({
+      tabs: [
+        ...tabs,
+        {
+          title: currentTitle,
+          content: currentValue,
+        },
+      ],
+    });
+  }
+
+  render() {
+    const { tabs, currentTitle, currentValue } = this.state;
+    return (
+      <>
+        <Tabs>
+          <TabList>
+            {tabs.map(({ title }) => (
+              <Tab key={title} data-testid="tab-title">
+                {title}
+              </Tab>
+            ))}
+          </TabList>
+
+          {tabs.map(({ content }, i) => (
+            <TabPanel key={content} data-testid="tab-content">
+              <h2>{content}</h2>
+              <button type="button" onClick={() => this.deleteTab(i)}>
+                X
+              </button>
+            </TabPanel>
+          ))}
+        </Tabs>
+        <input
+          type="text"
+          placeholder="Title"
+          value={currentTitle}
+          onChange={e => this.setState({ currentTitle: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Content"
+          value={currentValue}
+          onChange={e => this.setState({ currentValue: e.target.value })}
+        />
+        <button type="button" onClick={() => this.addTab()}>
+          Add
+        </button>
+      </>
     );
   }
 }
