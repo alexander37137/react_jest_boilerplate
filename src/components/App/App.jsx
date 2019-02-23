@@ -61,14 +61,14 @@ class App extends Component {
         <Tabs>
           <TabList>
             {tabs.map(({ id, title }) => (
-              <Tab key={id} data-testid="tab-title">
+              <Tab key={id} data-test="tab-title">
                 {title}
               </Tab>
             ))}
           </TabList>
 
           {tabs.map(({ id, content }, i) => (
-            <TabPanel key={id} data-testid="tab-content">
+            <TabPanel key={id} data-test="tab-content">
               <h2>{content}</h2>
               <button type="button" onClick={() => this.deleteTab(i)}>
                 X

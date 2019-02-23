@@ -7,17 +7,20 @@ describe('<App />', () => {
   it('renders app', () => {
     const wrapper = mount(<App />);
 
-    wrapper.find('[data-testid="tab-content"]');
-    expect(wrapper.render()).toMatchSnapshot();
+    const tabs = wrapper.find('[data-test="tab-title"] li');
+    expect(tabs.at(0)).toMatchSelector('[aria-selected="true"]');
   });
 
   it('selects second tab', () => {
-    const wrapper = mount(<App />);
-    const tab = wrapper.find('[data-testid="tab-title"]');
+    let wrapper = mount(<App />);
 
-    expect(wrapper.render()).toMatchSnapshot();
+    let tabs = wrapper.find('[data-test="tab-title"] li');
 
-    tab.at(1).simulate('click');
-    expect(wrapper.render()).toMatchSnapshot();
+    tabs.at(1).simulate('click');
+
+    wrapper = wrapper.update();
+    tabs = wrapper.find('[data-test="tab-title"] li');
+    expect(tabs.at(0)).toMatchSelector('[aria-selected="false"]');
+    expect(tabs.at(1)).toMatchSelector('[aria-selected="true"]');
   });
 });
