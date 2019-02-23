@@ -16,7 +16,7 @@
     ],
     "testEnvironment": "enzyme",
     "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.css$": "identity-obj-proxy"
     }
   },
   "importSort": {

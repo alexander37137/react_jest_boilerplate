@@ -2,16 +2,16 @@
 
 exports[`<App /> renders app 1`] = `
 <h2
-  data-tab-content={true}
+  data-testid="tab-content"
 >
-  Any content 1
+  Artists content
 </h2>
 `;
 
 exports[`<App /> selects second tab 1`] = `
 <h2
-  data-tab-content={true}
+  data-testid="tab-content"
 >
-  Any content 2
+  Books content
 </h2>
 `;

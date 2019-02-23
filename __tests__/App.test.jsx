@@ -7,15 +7,15 @@ describe('<App />', () => {
   it('renders app', () => {
     const wrapper = mount(<App />);
 
-    const tabContent = wrapper.find('[data-tab-content]');
+    const tabContent = wrapper.find('[data-testid="tab-content"]');
     expect(tabContent).toMatchSnapshot();
   });
 
   it('selects second tab', () => {
     const wrapper = mount(<App />);
-    const tab = wrapper.find('[data-books-tab]');
-    tab.simulate('click');
-    const tabContent = wrapper.find('[data-tab-content]');
+    const tab = wrapper.find('[data-testid="tab-title"]');
+    tab.at(1).simulate('click');
+    const tabContent = wrapper.find('[data-testid="tab-content"]');
     expect(tabContent).toMatchSnapshot();
   });
 });

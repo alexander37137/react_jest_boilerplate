@@ -11,24 +11,40 @@ import './App.css';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tabs: [
+        {
+          title: 'Artists',
+          content: 'Artists content',
+        },
+        {
+          title: 'Books',
+          content: 'Books content',
+        },
+      ],
+    };
+  }
+
   render() {
+    const { tabs } = this.state;
     return (
       <Tabs>
         <TabList>
-          <Tab>
-            <span data-artists-tab>Artists</span>
-          </Tab>
-          <Tab>
-            <span data-books-tab>Books</span>
-          </Tab>
+          {tabs.map(({ title }) => (
+            <Tab key={title}>
+              <span data-testid="tab-title">{title}</span>
+            </Tab>
+          ))}
         </TabList>
 
-        <TabPanel>
-          <h2 data-tab-content>Any content 1</h2>
-        </TabPanel>
-        <TabPanel>
-          <h2 data-tab-content>Any content 2</h2>
-        </TabPanel>
+        {tabs.map(({ content }) => (
+          <TabPanel key={content}>
+            <h2 data-testid="tab-content">{content}</h2>
+          </TabPanel>
+        ))}
       </Tabs>
     );
   }
