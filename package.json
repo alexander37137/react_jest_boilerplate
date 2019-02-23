@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "autofix": "eslint . --fix",
-    "test": "jest",
+    "test": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "npm test && webpack --mode production"
   },

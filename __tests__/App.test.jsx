@@ -12,15 +12,23 @@ describe('<App />', () => {
   });
 
   it('selects second tab', () => {
-    let wrapper = mount(<App />);
+    const wrapper = mount(<App />);
 
-    let tabs = wrapper.find('[data-test="tab-title"] li');
-
+    const tabs = wrapper.find('[data-test="tab-title"] li');
     tabs.at(1).simulate('click');
 
-    wrapper = wrapper.update();
-    tabs = wrapper.find('[data-test="tab-title"] li');
-    expect(tabs.at(0)).toMatchSelector('[aria-selected="false"]');
-    expect(tabs.at(1)).toMatchSelector('[aria-selected="true"]');
+    const updatedTabs = wrapper.find('[data-test="tab-title"] li');
+    expect(updatedTabs.at(0)).toMatchSelector('[aria-selected="false"]');
+    expect(updatedTabs.at(1)).toMatchSelector('[aria-selected="true"]');
+  });
+
+  it('delete first tab', () => {
+    const wrapper = mount(<App />);
+
+    const deleteButton = wrapper.find('[data-test="delete-tab"]');
+    deleteButton.simulate('click');
+
+    const tabs = wrapper.find('[data-test="tab-title"] li');
+    expect(tabs.length).toBe(1);
   });
 });

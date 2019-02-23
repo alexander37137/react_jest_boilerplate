@@ -70,7 +70,7 @@ class App extends Component {
           {tabs.map(({ id, content }, i) => (
             <TabPanel key={id} data-test="tab-content">
               <h2>{content}</h2>
-              <button type="button" onClick={() => this.deleteTab(i)}>
+              <button data-test="delete-tab" type="button" onClick={() => this.deleteTab(i)}>
                 X
               </button>
             </TabPanel>
