@@ -7,17 +7,17 @@ describe('<App />', () => {
   it('renders app', () => {
     const wrapper = mount(<App />);
 
-    const tabs = wrapper.find('[data-test="tab-title"] li');
+    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
     expect(tabs.at(0)).toMatchSelector('[aria-selected="true"]');
   });
 
   it('selects second tab', () => {
     const wrapper = mount(<App />);
 
-    const tabs = wrapper.find('[data-test="tab-title"] li');
+    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
     tabs.at(1).simulate('click');
 
-    const updatedTabs = wrapper.find('[data-test="tab-title"] li');
+    const updatedTabs = wrapper.find('[data-test="tab-title"]').hostNodes();
     expect(updatedTabs.at(0)).toMatchSelector('[aria-selected="false"]');
     expect(updatedTabs.at(1)).toMatchSelector('[aria-selected="true"]');
   });
@@ -28,7 +28,7 @@ describe('<App />', () => {
     const deleteButton = wrapper.find('[data-test="delete-tab"]');
     deleteButton.simulate('click');
 
-    const tabs = wrapper.find('[data-test="tab-title"] li');
+    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
     expect(tabs.length).toBe(1);
   });
 
@@ -42,7 +42,7 @@ describe('<App />', () => {
     const addButton = wrapper.find('[data-test="add-tab"]');
     addButton.simulate('click');
 
-    const tabs = wrapper.find('[data-test="tab-title"] li');
+    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
     expect(tabs.length).toBe(3);
     expect(tabs.at(2)).toHaveText('Phones');
   });
