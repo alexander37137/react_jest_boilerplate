@@ -7,17 +7,17 @@ describe('<App />', () => {
   it('renders app', () => {
     const wrapper = mount(<App />);
 
-    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
+    const tabs = wrapper.find('li[data-test="tab-title"]');
     expect(tabs.at(0)).toMatchSelector('[aria-selected="true"]');
   });
 
   it('selects second tab', () => {
     const wrapper = mount(<App />);
 
-    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
+    const tabs = wrapper.find('li[data-test="tab-title"]');
     tabs.at(1).simulate('click');
 
-    const updatedTabs = wrapper.find('[data-test="tab-title"]').hostNodes();
+    const updatedTabs = wrapper.find('li[data-test="tab-title"]');
     expect(updatedTabs.at(0)).toMatchSelector('[aria-selected="false"]');
     expect(updatedTabs.at(1)).toMatchSelector('[aria-selected="true"]');
   });
@@ -25,11 +25,12 @@ describe('<App />', () => {
   it('delete first tab', () => {
     const wrapper = mount(<App />);
 
+    const activeTab = wrapper.find('li[data-test="tab-title"][aria-selected="true"]');
     const deleteButton = wrapper.find('[data-test="delete-tab"]');
     deleteButton.simulate('click');
 
-    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
-    expect(tabs.length).toBe(1);
+    const newActiveTab = wrapper.find('li[data-test="tab-title"][aria-selected="true"]');
+    expect(newActiveTab).not.toHaveText(activeTab.text());
   });
 
   it('add new tab', () => {
@@ -42,7 +43,7 @@ describe('<App />', () => {
     const addButton = wrapper.find('[data-test="add-tab"]');
     addButton.simulate('click');
 
-    const tabs = wrapper.find('[data-test="tab-title"]').hostNodes();
+    const tabs = wrapper.find('li[data-test="tab-title"]');
     expect(tabs.length).toBe(3);
     expect(tabs.at(2)).toHaveText('Phones');
   });
