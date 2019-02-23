@@ -61,6 +61,7 @@
     "webpack-dev-server": "^3.2.0"
   },
   "dependencies": {
+    "nanoid": "^2.0.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-tabs": "^3.0.0"

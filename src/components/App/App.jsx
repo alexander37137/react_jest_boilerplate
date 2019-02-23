@@ -6,6 +6,7 @@ import {
   Tabs,
 } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import nanoid from 'nanoid';
 
 import './App.css';
 
@@ -19,10 +20,12 @@ class App extends Component {
       currentValue: '',
       tabs: [
         {
+          id: nanoid(),
           title: 'Artists',
           content: 'Artists content',
         },
         {
+          id: nanoid(),
           title: 'Books',
           content: 'Books content',
         },
@@ -43,6 +46,7 @@ class App extends Component {
       tabs: [
         ...tabs,
         {
+          id: nanoid(),
           title: currentTitle,
           content: currentValue,
         },
@@ -56,15 +60,15 @@ class App extends Component {
       <>
         <Tabs>
           <TabList>
-            {tabs.map(({ title }) => (
-              <Tab key={title} data-testid="tab-title">
+            {tabs.map(({ id, title }) => (
+              <Tab key={id} data-testid="tab-title">
                 {title}
               </Tab>
             ))}
           </TabList>
 
-          {tabs.map(({ content }, i) => (
-            <TabPanel key={content} data-testid="tab-content">
+          {tabs.map(({ id, content }, i) => (
+            <TabPanel key={id} data-testid="tab-content">
               <h2>{content}</h2>
               <button type="button" onClick={() => this.deleteTab(i)}>
                 X
