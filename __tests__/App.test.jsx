@@ -31,4 +31,19 @@ describe('<App />', () => {
     const tabs = wrapper.find('[data-test="tab-title"] li');
     expect(tabs.length).toBe(1);
   });
+
+  it('add new tab', () => {
+    const wrapper = mount(<App />);
+
+    const titleInput = wrapper.find('[data-test="current-tab-title"]');
+    titleInput.simulate('change', { target: { value: 'Phones' } });
+    const contentInput = wrapper.find('[data-test="current-tab-content"]');
+    contentInput.simulate('change', { target: { value: 'Phones content' } });
+    const addButton = wrapper.find('[data-test="add-tab"]');
+    addButton.simulate('click');
+
+    const tabs = wrapper.find('[data-test="tab-title"] li');
+    expect(tabs.length).toBe(3);
+    expect(tabs.at(2)).toHaveText('Phones');
+  });
 });

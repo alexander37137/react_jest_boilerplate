@@ -77,18 +77,20 @@ class App extends Component {
           ))}
         </Tabs>
         <input
+          data-test="current-tab-title"
           type="text"
           placeholder="Title"
           value={currentTitle}
           onChange={e => this.setState({ currentTitle: e.target.value })}
         />
         <input
+          data-test="current-tab-content"
           type="text"
           placeholder="Content"
           value={currentValue}
           onChange={e => this.setState({ currentValue: e.target.value })}
         />
-        <button type="button" onClick={() => this.addTab()}>
+        <button data-test="add-tab" type="button" onClick={() => this.addTab()}>
           Add
         </button>
       </>
