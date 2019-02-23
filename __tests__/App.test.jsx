@@ -1,18 +1,21 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import App from '../src/components/App';
 
 describe('<App />', () => {
   it('renders app', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = mount(<App />);
+
+    const tabContent = wrapper.find('[data-tab-content]');
+    expect(tabContent).toMatchSnapshot();
   });
 
   it('selects second tab', () => {
     const wrapper = mount(<App />);
-    const tabs = wrapper.find('[role="tab"]');
-    tabs.filterWhere(n => n.text() === 'Title 2').simulate('click');
-    expect(wrapper).toMatchSnapshot();
+    const tab = wrapper.find('[data-books-tab]');
+    tab.simulate('click');
+    const tabContent = wrapper.find('[data-tab-content]');
+    expect(tabContent).toMatchSnapshot();
   });
 });

@@ -9,20 +9,25 @@ import 'react-tabs/style/react-tabs.css';
 
 import './App.css';
 
+// eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
   render() {
     return (
       <Tabs>
         <TabList>
-          <Tab>Title 1</Tab>
-          <Tab>Title 2</Tab>
+          <Tab>
+            <span data-artists-tab>Artists</span>
+          </Tab>
+          <Tab>
+            <span data-books-tab>Books</span>
+          </Tab>
         </TabList>
 
         <TabPanel>
-          <h2>Any content 1</h2>
+          <h2 data-tab-content>Any content 1</h2>
         </TabPanel>
         <TabPanel>
-          <h2>Any content 2</h2>
+          <h2 data-tab-content>Any content 2</h2>
         </TabPanel>
       </Tabs>
     );
