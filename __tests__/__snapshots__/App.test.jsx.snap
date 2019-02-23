@@ -1,53 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<App /> renders app 1`] = `
-<div
-  class="react-tabs"
-  data-tabs="true"
+<Tabs
+  defaultFocus={false}
+  defaultIndex={null}
+  forceRenderTabPanel={false}
+  selectedIndex={null}
 >
-  <ul
-    class="react-tabs__tab-list"
-    role="tablist"
+  <TabList
+    className="react-tabs__tab-list"
   >
-    <li
-      aria-controls="react-tabs-1"
-      aria-disabled="false"
-      aria-selected="true"
-      class="react-tabs__tab react-tabs__tab--selected"
-      id="react-tabs-0"
-      role="tab"
-      tabindex="0"
+    <Tab
+      className="react-tabs__tab"
+      disabledClassName="react-tabs__tab--disabled"
+      focus={false}
+      id={null}
+      panelId={null}
+      selected={false}
+      selectedClassName="react-tabs__tab--selected"
     >
       Title 1
-    </li>
-    <li
-      aria-controls="react-tabs-3"
-      aria-disabled="false"
-      aria-selected="false"
-      class="react-tabs__tab"
-      id="react-tabs-2"
-      role="tab"
+    </Tab>
+    <Tab
+      className="react-tabs__tab"
+      disabledClassName="react-tabs__tab--disabled"
+      focus={false}
+      id={null}
+      panelId={null}
+      selected={false}
+      selectedClassName="react-tabs__tab--selected"
     >
       Title 2
-    </li>
-  </ul>
-  <div
-    aria-labelledby="react-tabs-0"
-    class="react-tabs__tab-panel react-tabs__tab-panel--selected"
-    id="react-tabs-1"
-    role="tabpanel"
+    </Tab>
+  </TabList>
+  <TabPanel
+    className="react-tabs__tab-panel"
+    forceRender={false}
+    selectedClassName="react-tabs__tab-panel--selected"
   >
     <h2>
       Any content 1
     </h2>
-  </div>
-  <div
-    aria-labelledby="react-tabs-2"
-    class="react-tabs__tab-panel"
-    id="react-tabs-3"
-    role="tabpanel"
-  />
-</div>
+  </TabPanel>
+  <TabPanel
+    className="react-tabs__tab-panel"
+    forceRender={false}
+    selectedClassName="react-tabs__tab-panel--selected"
+  >
+    <h2>
+      Any content 2
+    </h2>
+  </TabPanel>
+</Tabs>
 `;
 
 exports[`<App /> selects second tab 1`] = `
@@ -83,19 +87,19 @@ exports[`<App /> selects second tab 1`] = `
               className="react-tabs__tab"
               disabledClassName="react-tabs__tab--disabled"
               focus={false}
-              id="react-tabs-4"
+              id="react-tabs-0"
               key=".0"
-              panelId="react-tabs-5"
+              panelId="react-tabs-1"
               selected={false}
               selectedClassName="react-tabs__tab--selected"
               tabRef={[Function]}
             >
               <li
-                aria-controls="react-tabs-5"
+                aria-controls="react-tabs-1"
                 aria-disabled="false"
                 aria-selected="false"
                 className="react-tabs__tab"
-                id="react-tabs-4"
+                id="react-tabs-0"
                 role="tab"
                 tabIndex={null}
               >
@@ -106,19 +110,19 @@ exports[`<App /> selects second tab 1`] = `
               className="react-tabs__tab"
               disabledClassName="react-tabs__tab--disabled"
               focus={false}
-              id="react-tabs-6"
+              id="react-tabs-2"
               key=".1"
-              panelId="react-tabs-7"
+              panelId="react-tabs-3"
               selected={true}
               selectedClassName="react-tabs__tab--selected"
               tabRef={[Function]}
             >
               <li
-                aria-controls="react-tabs-7"
+                aria-controls="react-tabs-3"
                 aria-disabled="false"
                 aria-selected="true"
                 className="react-tabs__tab react-tabs__tab--selected"
-                id="react-tabs-6"
+                id="react-tabs-2"
                 role="tab"
                 tabIndex="0"
               >
@@ -130,32 +134,32 @@ exports[`<App /> selects second tab 1`] = `
         <TabPanel
           className="react-tabs__tab-panel"
           forceRender={false}
-          id="react-tabs-5"
+          id="react-tabs-1"
           key=".1"
           selected={false}
           selectedClassName="react-tabs__tab-panel--selected"
-          tabId="react-tabs-4"
+          tabId="react-tabs-0"
         >
           <div
-            aria-labelledby="react-tabs-4"
+            aria-labelledby="react-tabs-0"
             className="react-tabs__tab-panel"
-            id="react-tabs-5"
+            id="react-tabs-1"
             role="tabpanel"
           />
         </TabPanel>
         <TabPanel
           className="react-tabs__tab-panel"
           forceRender={false}
-          id="react-tabs-7"
+          id="react-tabs-3"
           key=".2"
           selected={true}
           selectedClassName="react-tabs__tab-panel--selected"
-          tabId="react-tabs-6"
+          tabId="react-tabs-2"
         >
           <div
-            aria-labelledby="react-tabs-6"
+            aria-labelledby="react-tabs-2"
             className="react-tabs__tab-panel react-tabs__tab-panel--selected"
-            id="react-tabs-7"
+            id="react-tabs-3"
             role="tabpanel"
           >
             <h2>

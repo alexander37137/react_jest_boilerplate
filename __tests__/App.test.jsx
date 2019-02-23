@@ -1,11 +1,11 @@
 import React from 'react';
-import { mount, render } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import App from '../src/components/App';
 
 describe('<App />', () => {
   it('renders app', () => {
-    const wrapper = render(<App />);
+    const wrapper = shallow(<App />);
     expect(wrapper).toMatchSnapshot();
   });
 
