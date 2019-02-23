@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'enzyme';
+import { mount, render } from 'enzyme';
 
 import App from '../src/components/App';
 
@@ -10,7 +10,9 @@ describe('<App />', () => {
   });
 
   it('selects second tab', () => {
-    const wrapper = render(<App />);
-    wrapper.find('button').simulate('click');
+    const wrapper = mount(<App />);
+    const tabs = wrapper.find('[role="tab"]');
+    tabs.filterWhere(n => n.text() === 'Title 2').simulate('click');
+    expect(wrapper).toMatchSnapshot();
   });
 });
