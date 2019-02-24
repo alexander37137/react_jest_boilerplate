@@ -3,12 +3,24 @@ import { mount } from 'enzyme';
 
 import App from '../src/components/App';
 
+jest.mock('js-cookie', () => {
+  const cookiesStorage = {};
+  return {
+    set(key, value) {
+      cookiesStorage[key] = value;
+    },
+    get(key) {
+      return cookiesStorage[key];
+    },
+  };
+});
+
 describe('<App />', () => {
   it('renders app', () => {
     const wrapper = mount(<App />);
 
     const tabs = wrapper.find('li[data-test="tab-title"]');
-    expect(tabs.at(0)).toMatchSelector('[aria-selected="true"]');
+    expect(tabs.at(0)).toHaveProp('aria-selected', 'true');
   });
 
   it('selects second tab', () => {
@@ -18,8 +30,8 @@ describe('<App />', () => {
     tabs.at(1).simulate('click');
 
     const updatedTabs = wrapper.find('li[data-test="tab-title"]');
-    expect(updatedTabs.at(0)).toMatchSelector('[aria-selected="false"]');
-    expect(updatedTabs.at(1)).toMatchSelector('[aria-selected="true"]');
+    expect(updatedTabs.at(0)).toHaveProp('aria-selected', 'false');
+    expect(updatedTabs.at(1)).toHaveProp('aria-selected', 'true');
   });
 
   it('delete first tab', () => {
@@ -45,5 +57,18 @@ describe('<App />', () => {
     const tabs = wrapper.find('li[data-test="tab-title"]');
     expect(wrapper).toContainMatchingElements(3, 'li[data-test="tab-title"]');
     expect(tabs.at(2)).toHaveText('Phones');
+  });
+
+  it('save selected tab', () => {
+    const wrapper = mount(<App />);
+
+    const tabs = wrapper.find('li[data-test="tab-title"]');
+    tabs.at(1).simulate('click');
+
+    const updatedWrapper = mount(<App />);
+
+    const updatedTabs = updatedWrapper.find('li[data-test="tab-title"]');
+    expect(updatedTabs.at(0)).toHaveProp('aria-selected', 'false');
+    expect(updatedTabs.at(1)).toHaveProp('aria-selected', 'true');
   });
 });
