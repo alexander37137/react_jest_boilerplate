@@ -15,6 +15,18 @@ jest.mock('js-cookie', () => {
   };
 });
 
+const pageObject = wrapper => ({
+  firstTab: () => wrapper.find('li[data-test="tab-title"]').at(0),
+  secondTab: () => wrapper.find('li[data-test="tab-title"]').at(1),
+});
+
+const mountApp = () => {
+  const wrapper = mount(<App />);
+  return pageObject(wrapper);
+};
+
+const reloadApp = mountApp;
+
 describe('<App />', () => {
   it('renders app', () => {
     const wrapper = mount(<App />);
@@ -60,15 +72,12 @@ describe('<App />', () => {
   });
 
   it('save selected tab', () => {
-    const wrapper = mount(<App />);
+    let s = mountApp();
+    s.secondTab().simulate('click');
 
-    const tabs = wrapper.find('li[data-test="tab-title"]');
-    tabs.at(1).simulate('click');
+    s = reloadApp();
 
-    const updatedWrapper = mount(<App />);
-
-    const updatedTabs = updatedWrapper.find('li[data-test="tab-title"]');
-    expect(updatedTabs.at(0)).toHaveProp('aria-selected', 'false');
-    expect(updatedTabs.at(1)).toHaveProp('aria-selected', 'true');
+    expect(s.firstTab()).toHaveProp('aria-selected', 'false');
+    expect(s.secondTab()).toHaveProp('aria-selected', 'true');
   });
 });
