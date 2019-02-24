@@ -6,12 +6,10 @@ import {
   Tabs,
 } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import createDebug from 'debug';
+import Cookie from 'js-cookie';
 import nanoid from 'nanoid';
 
 import './App.css';
-
-const log = createDebug('my-app');
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -19,6 +17,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      tabIndex: Number(Cookie.get('tabIndex')) || 0,
       currentTitle: '',
       currentValue: '',
       tabs: [
@@ -36,22 +35,16 @@ class App extends Component {
     };
   }
 
-  setStateWithLog(nextState) {
-    log('state', this.state);
-    log('nextState', nextState);
-    return this.setState(nextState);
-  }
-
   deleteTab(index) {
     const { tabs } = this.state;
-    this.setStateWithLog({
+    this.setState({
       tabs: tabs.filter((_, i) => index !== i),
     });
   }
 
   addTab() {
     const { tabs, currentTitle, currentValue } = this.state;
-    this.setStateWithLog({
+    this.setState({
       tabs: [
         ...tabs,
         {
@@ -63,11 +56,18 @@ class App extends Component {
     });
   }
 
+  selectTab(tabIndex) {
+    Cookie.set('tabIndex', tabIndex);
+    this.setState({ tabIndex });
+  }
+
   render() {
-    const { tabs, currentTitle, currentValue } = this.state;
+    const {
+      tabs, currentTitle, currentValue, tabIndex,
+    } = this.state;
     return (
       <>
-        <Tabs>
+        <Tabs selectedIndex={tabIndex} onSelect={index => this.selectTab(index)}>
           <TabList>
             {tabs.map(({ id, title }) => (
               <Tab key={id} data-test="tab-title">
@@ -90,14 +90,14 @@ class App extends Component {
           type="text"
           placeholder="Title"
           value={currentTitle}
-          onChange={e => this.setStateWithLog({ currentTitle: e.target.value })}
+          onChange={e => this.setState({ currentTitle: e.target.value })}
         />
         <input
           data-test="current-tab-content"
           type="text"
           placeholder="Content"
           value={currentValue}
-          onChange={e => this.setStateWithLog({ currentValue: e.target.value })}
+          onChange={e => this.setState({ currentValue: e.target.value })}
         />
         <button data-test="add-tab" type="button" onClick={() => this.addTab()}>
           Add

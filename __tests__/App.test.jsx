@@ -24,13 +24,12 @@ describe('<App />', () => {
 
   it('delete first tab', () => {
     const wrapper = mount(<App />);
+    const tabRemoveButtons = wrapper.find('[data-test="delete-tab"]');
 
-    const activeTab = wrapper.find('li[data-test="tab-title"][aria-selected="true"]');
-    const deleteButton = wrapper.find('[data-test="delete-tab"]');
-    deleteButton.simulate('click');
+    expect(wrapper).toContainMatchingElements(2, 'li[data-test="tab-title"]');
+    tabRemoveButtons.last().simulate('click');
 
-    const newActiveTab = wrapper.find('li[data-test="tab-title"][aria-selected="true"]');
-    expect(newActiveTab).not.toHaveText(activeTab.text());
+    expect(wrapper).toContainMatchingElements(1, 'li[data-test="tab-title"]');
   });
 
   it('add new tab', () => {
@@ -44,7 +43,7 @@ describe('<App />', () => {
     addButton.simulate('click');
 
     const tabs = wrapper.find('li[data-test="tab-title"]');
-    expect(tabs.length).toBe(3);
+    expect(wrapper).toContainMatchingElements(3, 'li[data-test="tab-title"]');
     expect(tabs.at(2)).toHaveText('Phones');
   });
 });
