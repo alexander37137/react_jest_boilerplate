@@ -15,67 +15,82 @@ jest.mock('js-cookie', () => {
   };
 });
 
+const TABS_SELECTOR = 'li[data-test="tab-title"]';
+
 const pageObject = wrapper => ({
-  firstTab: () => wrapper.find('li[data-test="tab-title"]').at(0),
-  secondTab: () => wrapper.find('li[data-test="tab-title"]').at(1),
+  tabs() {
+    return wrapper.find(TABS_SELECTOR);
+  },
+  firstTab() {
+    return this.tabs().at(0);
+  },
+  secondTab() {
+    return this.tabs().at(1);
+  },
+  thirdTab() {
+    return this.tabs().at(2);
+  },
+  addButton() {
+    return wrapper.find('[data-test="add-tab"]');
+  },
+  deleteButton() {
+    return wrapper.find('[data-test="delete-tab"]');
+  },
+  titleInput() {
+    return wrapper.find('[data-test="current-tab-title"]');
+  },
+  contentInput() {
+    return wrapper.find('[data-test="current-tab-content"]');
+  },
 });
 
 const mountApp = () => {
   const wrapper = mount(<App />);
-  return pageObject(wrapper);
+  return [pageObject(wrapper), wrapper];
 };
 
 const reloadApp = mountApp;
 
 describe('<App />', () => {
   it('renders app', () => {
-    const wrapper = mount(<App />);
-
-    const tabs = wrapper.find('li[data-test="tab-title"]');
-    expect(tabs.at(0)).toHaveProp('aria-selected', 'true');
+    const [s] = mountApp();
+    expect(s.firstTab()).toHaveProp('aria-selected', 'true');
   });
 
   it('selects second tab', () => {
-    const wrapper = mount(<App />);
+    const [s] = mountApp();
 
-    const tabs = wrapper.find('li[data-test="tab-title"]');
-    tabs.at(1).simulate('click');
+    s.secondTab().simulate('click');
 
-    const updatedTabs = wrapper.find('li[data-test="tab-title"]');
-    expect(updatedTabs.at(0)).toHaveProp('aria-selected', 'false');
-    expect(updatedTabs.at(1)).toHaveProp('aria-selected', 'true');
+    expect(s.firstTab()).toHaveProp('aria-selected', 'false');
+    expect(s.secondTab()).toHaveProp('aria-selected', 'true');
   });
 
   it('delete first tab', () => {
-    const wrapper = mount(<App />);
-    const tabRemoveButtons = wrapper.find('[data-test="delete-tab"]');
+    const [s, wrapper] = mountApp();
 
-    expect(wrapper).toContainMatchingElements(2, 'li[data-test="tab-title"]');
-    tabRemoveButtons.last().simulate('click');
+    expect(wrapper).toContainMatchingElements(2, TABS_SELECTOR);
+    s.deleteButton().simulate('click');
 
-    expect(wrapper).toContainMatchingElements(1, 'li[data-test="tab-title"]');
+    expect(wrapper).toContainMatchingElements(1, TABS_SELECTOR);
   });
 
   it('add new tab', () => {
-    const wrapper = mount(<App />);
+    const [s, wrapper] = mountApp();
 
-    const titleInput = wrapper.find('[data-test="current-tab-title"]');
-    titleInput.simulate('change', { target: { value: 'Phones' } });
-    const contentInput = wrapper.find('[data-test="current-tab-content"]');
-    contentInput.simulate('change', { target: { value: 'Phones content' } });
-    const addButton = wrapper.find('[data-test="add-tab"]');
-    addButton.simulate('click');
+    s.titleInput().simulate('change', { target: { value: 'Phones' } });
+    s.contentInput().simulate('change', { target: { value: 'Phones content' } });
+    s.addButton().simulate('click');
 
-    const tabs = wrapper.find('li[data-test="tab-title"]');
-    expect(wrapper).toContainMatchingElements(3, 'li[data-test="tab-title"]');
-    expect(tabs.at(2)).toHaveText('Phones');
+    expect(wrapper).toContainMatchingElements(3, TABS_SELECTOR);
+    expect(s.thirdTab()).toHaveText('Phones');
   });
 
   it('save selected tab', () => {
-    let s = mountApp();
+    let [s] = mountApp();
     s.secondTab().simulate('click');
 
-    s = reloadApp();
+    [s] = reloadApp();
 
     expect(s.firstTab()).toHaveProp('aria-selected', 'false');
     expect(s.secondTab()).toHaveProp('aria-selected', 'true');
