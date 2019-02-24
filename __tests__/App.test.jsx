@@ -35,6 +35,9 @@ const pageObject = wrapper => ({
   thirdTab() {
     return this.tabs().at(2);
   },
+  content() {
+    return wrapper.find('[data-test="tab-content"]');
+  },
   addButton() {
     return wrapper.find('[data-test="add-tab"]');
   },
@@ -88,6 +91,9 @@ describe('<App />', () => {
         wrapper.update();
         expect(wrapper).toContainMatchingElements(3, TABS_SELECTOR);
         expect(s.thirdTab()).toHaveText('sample_title');
+        expect(s.content()).toIncludeText(
+          'Китайские игроки обрушили рейтинг хоррора Devotion в Steam из-за пасхалки про главу КНР и Винни-Пуха',
+        );
         done();
       });
       return Promise.resolve({ data: rssData });

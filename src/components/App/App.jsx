@@ -53,6 +53,7 @@ class App extends Component {
     this.setState({
       currentTitle: '',
       currentValue: '',
+      tabIndex: tabs.length,
       tabs: [
         ...tabs,
         {
