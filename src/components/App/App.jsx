@@ -9,9 +9,10 @@ import 'react-tabs/style/react-tabs.css';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import nanoid from 'nanoid';
-import Parser from 'rss-parser';
 
 import './App.css';
+
+import { RssService } from '../../services/RssService';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -47,9 +48,7 @@ class App extends Component {
   async addTab() {
     const { tabs, currentTitle, currentValue } = this.state;
     const rss = await axios.get(currentValue);
-    const parser = new Parser();
-    const feed = await parser.parseString(rss.data);
-    const content = feed.items.map(item => item.title);
+    const content = await RssService.titles(rss.data);
     this.setState({
       currentTitle: '',
       currentValue: '',

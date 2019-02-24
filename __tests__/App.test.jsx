@@ -1,10 +1,13 @@
 import React from 'react';
 import fs from 'fs';
-import axios from 'axios';
+import delay from 'delay';
 import { mount } from 'enzyme';
+import nock from 'nock';
 
 import App from '../src/components/App';
+import { RssService } from '../src/services/RssService';
 
+nock.disableNetConnect();
 const rssData = fs.readFileSync('__fixtures__/rss.xml');
 
 jest.mock('js-cookie', () => {
@@ -18,7 +21,6 @@ jest.mock('js-cookie', () => {
     },
   };
 });
-jest.mock('axios');
 
 const TABS_SELECTOR = 'li[data-test="tab-title"]';
 
@@ -83,27 +85,27 @@ describe('<App />', () => {
     expect(wrapper).toContainMatchingElements(1, TABS_SELECTOR);
   });
 
-  it('add new tab', (done) => {
+  it('add new tab', async () => {
     const [s, wrapper] = mountApp();
 
-    axios.get.mockImplementation(() => {
-      setTimeout(() => {
-        wrapper.update();
-        expect(wrapper).toContainMatchingElements(3, TABS_SELECTOR);
-        expect(s.thirdTab()).toHaveText('sample_title');
-        expect(s.content()).toIncludeText(
-          'Китайские игроки обрушили рейтинг хоррора Devotion в Steam из-за пасхалки про главу КНР и Винни-Пуха',
-        );
-        done();
-      });
-      return Promise.resolve({ data: rssData });
-    });
+    nock('http://sample_url/')
+      .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+      .get('/')
+      .reply(200, rssData);
 
     s.titleInput().simulate('change', { target: { value: 'sample_title' } });
     s.contentInput().simulate('change', {
-      target: { value: 'sample_url' },
+      target: { value: 'http://sample_url/' },
     });
     s.addButton().simulate('click');
+
+    await delay(100);
+    wrapper.update();
+
+    expect(wrapper).toContainMatchingElements(3, TABS_SELECTOR);
+    expect(s.thirdTab()).toHaveText('sample_title');
+    const titles = await RssService.titles(rssData);
+    titles.forEach(title => expect(s.content()).toIncludeText(title));
   });
 
   it('save selected tab', () => {
