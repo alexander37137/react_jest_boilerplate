@@ -6,8 +6,10 @@ import {
   Tabs,
 } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import axios from 'axios';
 import Cookie from 'js-cookie';
 import nanoid from 'nanoid';
+import Parser from 'rss-parser';
 
 import './App.css';
 
@@ -18,18 +20,18 @@ class App extends Component {
 
     this.state = {
       tabIndex: Number(Cookie.get('tabIndex')) || 0,
-      currentTitle: '',
-      currentValue: '',
+      currentTitle: 'Dtf',
+      currentValue: 'https://cors.io/?https://dtf.ru/rss/all',
       tabs: [
         {
           id: nanoid(),
           title: 'Artists',
-          content: 'Artists content',
+          content: ['Artists content'],
         },
         {
           id: nanoid(),
           title: 'Books',
-          content: 'Books content',
+          content: ['Books content'],
         },
       ],
     };
@@ -42,15 +44,21 @@ class App extends Component {
     });
   }
 
-  addTab() {
+  async addTab() {
     const { tabs, currentTitle, currentValue } = this.state;
+    const rss = await axios.get(currentValue);
+    const parser = new Parser();
+    const feed = await parser.parseString(rss.data);
+    const content = feed.items.map(item => item.title);
     this.setState({
+      currentTitle: '',
+      currentValue: '',
       tabs: [
         ...tabs,
         {
+          content,
           id: nanoid(),
           title: currentTitle,
-          content: currentValue,
         },
       ],
     });
@@ -78,7 +86,11 @@ class App extends Component {
 
           {tabs.map(({ id, content }, i) => (
             <TabPanel key={id}>
-              <h2 data-test="tab-content">{content}</h2>
+              <div data-test="tab-content">
+                {content.map(line => (
+                  <p key={line}>{line}</p>
+                ))}
+              </div>
               <button data-test="delete-tab" type="button" onClick={() => this.deleteTab(i)}>
                 X
               </button>
@@ -95,7 +107,7 @@ class App extends Component {
         <input
           data-test="current-tab-content"
           type="text"
-          placeholder="Content"
+          placeholder="Rss link"
           value={currentValue}
           onChange={e => this.setState({ currentValue: e.target.value })}
         />

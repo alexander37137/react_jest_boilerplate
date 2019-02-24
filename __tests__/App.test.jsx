@@ -1,7 +1,11 @@
 import React from 'react';
+import fs from 'fs';
+import axios from 'axios';
 import { mount } from 'enzyme';
 
 import App from '../src/components/App';
+
+const rssData = fs.readFileSync('__fixtures__/rss.xml');
 
 jest.mock('js-cookie', () => {
   const cookiesStorage = {};
@@ -14,6 +18,7 @@ jest.mock('js-cookie', () => {
     },
   };
 });
+jest.mock('axios');
 
 const TABS_SELECTOR = 'li[data-test="tab-title"]';
 
@@ -75,15 +80,24 @@ describe('<App />', () => {
     expect(wrapper).toContainMatchingElements(1, TABS_SELECTOR);
   });
 
-  it('add new tab', () => {
+  it('add new tab', (done) => {
     const [s, wrapper] = mountApp();
 
-    s.titleInput().simulate('change', { target: { value: 'Phones' } });
-    s.contentInput().simulate('change', { target: { value: 'Phones content' } });
-    s.addButton().simulate('click');
+    axios.get.mockImplementation(() => {
+      setTimeout(() => {
+        wrapper.update();
+        expect(wrapper).toContainMatchingElements(3, TABS_SELECTOR);
+        expect(s.thirdTab()).toHaveText('sample_title');
+        done();
+      });
+      return Promise.resolve({ data: rssData });
+    });
 
-    expect(wrapper).toContainMatchingElements(3, TABS_SELECTOR);
-    expect(s.thirdTab()).toHaveText('Phones');
+    s.titleInput().simulate('change', { target: { value: 'sample_title' } });
+    s.contentInput().simulate('change', {
+      target: { value: 'sample_url' },
+    });
+    s.addButton().simulate('click');
   });
 
   it('save selected tab', () => {

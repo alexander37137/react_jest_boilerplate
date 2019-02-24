@@ -20,7 +20,8 @@
     ],
     "testEnvironment": "enzyme",
     "moduleNameMapper": {
-      "\\.css$": "identity-obj-proxy"
+      "\\.css$": "identity-obj-proxy",
+      "\\.xml$": "jest-raw-loader"
     }
   },
   "importSort": {
@@ -33,8 +34,10 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.3.3",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.3.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -62,11 +65,14 @@
     "webpack-dev-server": "^3.2.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "debug": "^4.1.1",
+    "jest-raw-loader": "^1.0.1",
     "js-cookie": "^2.2.0",
     "nanoid": "^2.0.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-tabs": "^3.0.0"
+    "react-tabs": "^3.0.0",
+    "rss-parser": "^3.6.2"
   }
 }
